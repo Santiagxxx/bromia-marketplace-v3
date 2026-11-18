@@ -7,23 +7,23 @@
       </h2>
     </div>
 
-    <div class="flex items-center gap-4 sm:gap-7 overflow-x-auto pb-4 no-scrollbar">
+    <div class="flex items-start gap-4 sm:gap-6 overflow-x-auto pt-2 pb-4 no-scrollbar">
       <button
         @click="catalogStore.selectedCategory = 'todos'"
-        class="flex flex-col items-center gap-2 shrink-0 group focus:outline-none"
+        class="w-20 sm:w-24 shrink-0 flex flex-col items-center gap-2 group focus:outline-none"
       >
         <div
-          class="w-20 h-20 sm:w-24 sm:h-24 rounded-full p-1 transition-all duration-300"
+          class="w-20 h-20 sm:w-24 sm:h-24 rounded-full p-[3px] transition-all duration-300 flex items-center justify-center"
           :class="catalogStore.selectedCategory === 'todos'
-            ? 'bg-gradient-to-tr from-bromia-berry via-bromia-cocoa to-bromia-lavender scale-105 shadow-bromia'
-            : 'bg-bromia-lavender group-hover:scale-105'"
+            ? 'bg-gradient-to-tr from-bromia-berry via-bromia-cocoa to-bromia-berry shadow-bromia ring-2 ring-bromia-berry/30 ring-offset-2 ring-offset-white'
+            : 'bg-bromia-lavender/80 group-hover:bg-bromia-cocoa/20'"
         >
           <div class="w-full h-full rounded-full bg-bromia-lavender flex items-center justify-center border-2 border-white overflow-hidden">
-            <img src="@/assets/bromia-logo.svg" alt="Todos" class="w-full h-full object-cover" />
+            <img src="@/assets/bromia-logo.svg" alt="Todos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
           </div>
         </div>
         <span
-          class="text-xs sm:text-sm font-bold transition-colors"
+          class="w-20 sm:w-24 text-center text-xs sm:text-sm font-bold leading-tight transition-colors min-h-[2.25rem] flex items-start justify-center"
           :class="catalogStore.selectedCategory === 'todos' ? 'text-bromia-berry' : 'text-bromia-cocoa'"
         >
           Todos
@@ -34,13 +34,13 @@
         v-for="cat in catalogStore.categories"
         :key="cat.id"
         @click="catalogStore.selectedCategory = cat.slug"
-        class="flex flex-col items-center gap-2 shrink-0 group focus:outline-none"
+        class="w-20 sm:w-24 shrink-0 flex flex-col items-center gap-2 group focus:outline-none"
       >
         <div
-          class="w-20 h-20 sm:w-24 sm:h-24 rounded-full p-1 transition-all duration-300"
+          class="w-20 h-20 sm:w-24 sm:h-24 rounded-full p-[3px] transition-all duration-300 flex items-center justify-center"
           :class="catalogStore.selectedCategory === cat.slug
-            ? 'bg-gradient-to-tr from-bromia-berry via-bromia-cocoa to-bromia-lavender scale-105 shadow-bromia'
-            : 'bg-bromia-lavender group-hover:scale-105'"
+            ? 'bg-gradient-to-tr from-bromia-berry via-bromia-cocoa to-bromia-berry shadow-bromia ring-2 ring-bromia-berry/30 ring-offset-2 ring-offset-white'
+            : 'bg-bromia-lavender/80 group-hover:bg-bromia-cocoa/20'"
         >
           <div class="w-full h-full rounded-full bg-white border-2 border-white overflow-hidden">
             <img
@@ -51,7 +51,7 @@
           </div>
         </div>
         <span
-          class="text-xs sm:text-sm font-bold text-center max-w-[96px] leading-tight transition-colors"
+          class="w-20 sm:w-24 text-center text-xs sm:text-sm font-bold leading-tight transition-colors min-h-[2.25rem] flex items-start justify-center"
           :class="catalogStore.selectedCategory === cat.slug ? 'text-bromia-berry' : 'text-bromia-cocoa'"
         >
           {{ cat.name }}

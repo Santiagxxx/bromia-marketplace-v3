@@ -45,45 +45,59 @@
         <div class="lg:col-span-5 flex justify-center">
           <div class="relative w-full max-w-sm">
             <div class="bg-bromia-lavender rounded-[2rem] p-5 shadow-bromia-lg border-4 border-white relative animate-float-slow">
-              <div class="starburst-badge w-16 h-16 bg-bromia-cocoa text-white font-display font-bold text-xs flex items-center justify-center absolute -top-4 -left-4 z-20 shadow-md -rotate-12">
+              <!-- Badge NEW: Dimensionado y ubicado sin tapar el texto -->
+              <div class="starburst-badge w-14 h-14 bg-bromia-cocoa text-white font-display font-bold text-xs flex items-center justify-center absolute -top-3.5 -left-3.5 z-20 shadow-md -rotate-12">
                 NEW
               </div>
 
-              <div class="flex items-center justify-between mb-3">
-                <span class="font-display font-extrabold text-xl tracking-tight text-bromia-cocoa uppercase leading-none">
-                  BROOKIES<br />
-                  <span class="text-bromia-cocoa/70">ARTESANALES</span>
-                </span>
+              <!-- Cabecera con padding izquierdo para despejar el badge NEW -->
+              <div class="flex items-center justify-between mb-3 pl-8">
+                <div class="flex flex-col">
+                  <span class="font-display font-extrabold text-xl tracking-tight text-bromia-cocoa uppercase leading-tight">
+                    BROOKIES
+                  </span>
+                  <span class="text-xs font-bold text-bromia-cocoa/70 uppercase tracking-wider">
+                    ARTESANALES
+                  </span>
+                  <span class="font-script text-base sm:text-lg text-bromia-berry mt-0.5">
+                    Perfectas para regalar ♡
+                  </span>
+                </div>
                 <BromiaLogo :size="48" :show-handle="false" />
               </div>
 
-              <div class="relative rounded-2xl overflow-hidden aspect-[4/3] bg-white shadow-inner">
+              <!-- Foto con badge 'Recién horneados' integrado limpiamente en la esquina superior -->
+              <div class="relative rounded-2xl overflow-hidden aspect-[4/3] bg-white shadow-inner group">
                 <img
                   src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80"
                   alt="Brookies Bromia recién horneados"
                   class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
-              </div>
-
-              <div class="mt-3 flex items-center justify-between">
-                <span class="font-script text-2xl text-bromia-cocoa font-bold">
-                  Perfectas para regalar ♡
-                </span>
-                <span class="text-xs font-bold px-3 py-1 rounded-full bg-white text-bromia-cocoa">
+                <span class="absolute top-2.5 right-2.5 text-[11px] font-bold px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md text-bromia-cocoa shadow-sm flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                   Recién horneados
                 </span>
               </div>
-            </div>
 
-            <div class="hidden sm:flex items-center gap-3 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-bromia border border-bromia-lavender absolute -bottom-5 -right-5 animate-float-delayed">
-              <img
-                src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=200&q=80"
-                alt="Cheesecake Bromia"
-                class="w-12 h-12 rounded-xl object-cover"
-              />
-              <div>
-                <p class="font-display font-bold text-xs text-bromia-cocoa">Tu Cheesecake</p>
-                <p class="text-[11px] text-bromia-berry font-semibold">¡Ármalo a tu manera!</p>
+              <!-- Destacado secundario: Tu Cheesecake integrado armónicamente sin tapar ningún texto -->
+              <div class="mt-3.5 bg-white/95 backdrop-blur-md p-2.5 sm:p-3 rounded-2xl border border-bromia-lavender/90 shadow-sm flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3 min-w-0">
+                  <img
+                    src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=200&q=80"
+                    alt="Cheesecake Bromia"
+                    class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl object-cover shrink-0 shadow-sm"
+                  />
+                  <div class="truncate">
+                    <p class="font-display font-bold text-xs sm:text-sm text-bromia-cocoa truncate">Tu Cheesecake</p>
+                    <p class="text-[11px] sm:text-xs text-bromia-berry font-semibold truncate">¡Ármalo a tu manera!</p>
+                  </div>
+                </div>
+                <a
+                  href="#catalogo"
+                  class="shrink-0 text-xs font-bold px-3 py-1.5 rounded-full bg-bromia-lavender hover:bg-bromia-berry hover:text-white text-bromia-cocoa transition-all duration-300"
+                >
+                  Pedir ✨
+                </a>
               </div>
             </div>
           </div>
