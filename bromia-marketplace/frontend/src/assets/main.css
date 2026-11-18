@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+.starburst-badge {
+  clip-path: polygon(
+    50% 0%, 61% 8%, 75% 4%, 81% 17%, 95% 20%, 94% 34%, 100% 47%, 92% 59%,
+    96% 73%, 83% 80%, 80% 94%, 66% 93%, 54% 100%, 42% 92%, 28% 96%, 21% 83%,
+    7% 80%, 8% 66%, 0% 54%, 8% 42%, 4% 28%, 17% 21%, 20% 7%, 34% 8%
+  );
+}
+
+.page-fade-enter-active,
+.page-fade-leave-active {
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.page-fade-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.product-grid-move,
+.product-grid-enter-active,
+.product-grid-leave-active {
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.product-grid-enter-from,
+.product-grid-leave-to {
+  opacity: 0;
+  transform: scale(0.94) translateY(16px);
+}
+
+.product-grid-leave-active {
+  position: absolute;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF0FD;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D9B3E6;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5D3228;
+}
