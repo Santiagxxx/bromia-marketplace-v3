@@ -10,21 +10,21 @@
     <div class="flex items-start gap-4 sm:gap-6 overflow-x-auto pt-2 pb-4 no-scrollbar">
       <button
         @click="catalogStore.selectedCategory = 'todos'"
-        class="w-20 sm:w-24 shrink-0 flex flex-col items-center gap-2 group focus:outline-none"
+        class="w-20 sm:w-24 shrink-0 flex flex-col items-center gap-2 group focus:outline-none transition-transform duration-300 active:scale-95 hover:-translate-y-1"
       >
         <div
-          class="w-20 h-20 sm:w-24 sm:h-24 rounded-full p-[3px] transition-all duration-300 flex items-center justify-center"
+          class="w-20 h-20 sm:w-24 sm:h-24 rounded-full p-[3px] transition-all duration-500 flex items-center justify-center group-hover:shadow-bromia"
           :class="catalogStore.selectedCategory === 'todos'
-            ? 'bg-gradient-to-tr from-bromia-berry via-bromia-cocoa to-bromia-berry shadow-bromia ring-2 ring-bromia-berry/30 ring-offset-2 ring-offset-white'
-            : 'bg-bromia-lavender/80 group-hover:bg-bromia-cocoa/20'"
+            ? 'bg-gradient-to-tr from-bromia-berry via-bromia-cocoa to-bromia-berry shadow-bromia ring-2 ring-bromia-berry/40 ring-offset-2 ring-offset-white animate-breathe'
+            : 'bg-bromia-lavender/80 group-hover:bg-bromia-cocoa/25'"
         >
-          <div class="w-full h-full rounded-full bg-bromia-lavender flex items-center justify-center border-2 border-white overflow-hidden">
-            <img src="@/assets/bromia-logo.svg" alt="Todos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+          <div class="w-full h-full rounded-full bg-bromia-lavender flex items-center justify-center border-2 border-white overflow-hidden transition-transform duration-500 group-hover:scale-105">
+            <img src="@/assets/bromia-logo.svg" alt="Todos" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
           </div>
         </div>
         <span
           class="w-20 sm:w-24 text-center text-xs sm:text-sm font-bold leading-tight transition-colors min-h-[2.25rem] flex items-start justify-center"
-          :class="catalogStore.selectedCategory === 'todos' ? 'text-bromia-berry' : 'text-bromia-cocoa'"
+          :class="catalogStore.selectedCategory === 'todos' ? 'text-bromia-berry' : 'text-bromia-cocoa group-hover:text-bromia-berry'"
         >
           Todos
         </span>
@@ -34,25 +34,25 @@
         v-for="cat in catalogStore.categories"
         :key="cat.id"
         @click="catalogStore.selectedCategory = cat.slug"
-        class="w-20 sm:w-24 shrink-0 flex flex-col items-center gap-2 group focus:outline-none"
+        class="w-20 sm:w-24 shrink-0 flex flex-col items-center gap-2 group focus:outline-none transition-transform duration-300 active:scale-95 hover:-translate-y-1"
       >
         <div
-          class="w-20 h-20 sm:w-24 sm:h-24 rounded-full p-[3px] transition-all duration-300 flex items-center justify-center"
+          class="w-20 h-20 sm:w-24 sm:h-24 rounded-full p-[3px] transition-all duration-500 flex items-center justify-center group-hover:shadow-bromia relative"
           :class="catalogStore.selectedCategory === cat.slug
-            ? 'bg-gradient-to-tr from-bromia-berry via-bromia-cocoa to-bromia-berry shadow-bromia ring-2 ring-bromia-berry/30 ring-offset-2 ring-offset-white'
-            : 'bg-bromia-lavender/80 group-hover:bg-bromia-cocoa/20'"
+            ? (cat.slug.includes('navidad') ? 'bg-gradient-to-tr from-amber-400 via-bromia-berry to-red-600 shadow-bromia ring-2 ring-amber-400/80 ring-offset-2 ring-offset-white animate-breathe' : 'bg-gradient-to-tr from-bromia-berry via-bromia-cocoa to-bromia-berry shadow-bromia ring-2 ring-bromia-berry/40 ring-offset-2 ring-offset-white animate-breathe')
+            : (cat.slug.includes('navidad') ? 'bg-gradient-to-tr from-amber-300 via-bromia-berry to-red-400 shadow-sm' : 'bg-bromia-lavender/80 group-hover:bg-bromia-cocoa/25')"
         >
-          <div class="w-full h-full rounded-full bg-white border-2 border-white overflow-hidden">
+          <div class="w-full h-full rounded-full bg-white border-2 border-white overflow-hidden transition-transform duration-500 group-hover:scale-105">
             <img
               :src="cat.coverImageUrl"
               :alt="cat.name"
-              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-115"
             />
           </div>
         </div>
         <span
           class="w-20 sm:w-24 text-center text-xs sm:text-sm font-bold leading-tight transition-colors min-h-[2.25rem] flex items-start justify-center"
-          :class="catalogStore.selectedCategory === cat.slug ? 'text-bromia-berry' : 'text-bromia-cocoa'"
+          :class="catalogStore.selectedCategory === cat.slug ? 'text-bromia-berry' : 'text-bromia-cocoa group-hover:text-bromia-berry'"
         >
           {{ cat.name }}
         </span>

@@ -1,0 +1,10 @@
+{
+  "buildCommand": "cd bromia-marketplace/frontend && npm install && npm run build",
+  "outputDirectory": "bromia-marketplace/frontend/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

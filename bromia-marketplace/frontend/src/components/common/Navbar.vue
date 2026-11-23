@@ -1,7 +1,43 @@
 <template>
   <header class="sticky top-0 z-40">
-    <div class="bg-bromia-cocoa text-bromia-lavender text-xs sm:text-sm py-2 px-4 text-center font-medium tracking-wide">
-      {{ configStore.config.promoBannerText }}
+    <div class="bg-gradient-to-r from-bromia-cocoa via-bromia-berry to-bromia-cocoa text-white text-xs sm:text-sm py-1.5 px-4 shadow-sm">
+      <div class="max-w-7xl mx-auto flex items-center justify-between font-medium tracking-wide">
+        <span class="mx-auto sm:mx-0 flex items-center gap-1.5 font-semibold">
+          <span>🎄</span>
+          <span>{{ configStore.config.promoBannerText }}</span>
+        </span>
+        <div class="hidden sm:flex items-center gap-3 text-xs">
+          <a
+            href="https://instagram.com/bromiaoficial"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-amber-200 transition-all hover:scale-105 flex items-center gap-1 opacity-90 hover:opacity-100"
+            title="Instagram Oficial"
+          >
+            <span>Instagram</span>
+          </a>
+          <span class="opacity-40">•</span>
+          <a
+            href="https://tiktok.com/@bromiaoficial"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-amber-200 transition-all hover:scale-105 flex items-center gap-1 opacity-90 hover:opacity-100"
+            title="TikTok Oficial"
+          >
+            <span>TikTok</span>
+          </a>
+          <span class="opacity-40">•</span>
+          <a
+            :href="'https://wa.me/' + (configStore.config.whatsappNumber || '573001234567').replace(/\D/g, '')"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-amber-200 transition-all hover:scale-105 flex items-center gap-1 opacity-90 hover:opacity-100"
+            title="WhatsApp Oficial"
+          >
+            <span>WhatsApp</span>
+          </a>
+        </div>
+      </div>
     </div>
 
     <nav class="bg-white/85 backdrop-blur-md border-b border-bromia-lavender transition-all">

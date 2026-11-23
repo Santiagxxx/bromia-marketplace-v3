@@ -21,7 +21,7 @@ export function buildWhatsAppOrderUrl({
   const cleanPhone = String(whatsappNumber || '573001234567').replace(/\D/g, '')
 
   const lines = [
-    `🍫 *¡Hola Bromia! Pedido web ${orderNumber ? '#' + orderNumber : ''}*`,
+    `🎄 *¡Hola Bromia! Pedido Navideño web ${orderNumber ? '#' + orderNumber : ''}* ✨`,
     ''
   ]
 

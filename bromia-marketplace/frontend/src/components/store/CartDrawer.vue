@@ -127,13 +127,13 @@
                 </div>
               </div>
 
-              <!-- Banner de anticipación de horneado artesanal (Estilo Beiked) -->
-              <div class="p-3.5 rounded-2xl bg-amber-50/90 border border-amber-200 text-xs text-amber-950 flex items-start gap-2.5">
-                <Sparkles class="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+              <!-- Banner de anticipación de horneado artesanal navideño -->
+              <div class="p-3.5 rounded-2xl bg-amber-50/95 border border-amber-300 text-xs text-amber-950 flex items-start gap-2.5 shadow-sm">
+                <span class="text-base shrink-0 mt-0.5">🎄</span>
                 <div>
-                  <p class="font-bold">Horneado artesanal programado</p>
-                  <p class="text-[11px] text-amber-900/80 mt-0.5 leading-relaxed">
-                    Nuestros postres se hornean frescos al día de tu entrega. Podrás elegir recibir tu pedido mañana o en 2 días.
+                  <p class="font-bold text-bromia-cocoa">Horneado Navideño & Programación</p>
+                  <p class="text-[11px] text-amber-900/85 mt-0.5 leading-relaxed">
+                    Nuestros antojitos navideños se hornean bajo pedido. Puedes programar tu entrega para hoy, mañana o para el día de tu Novena favorita.
                   </p>
                 </div>
               </div>
@@ -335,17 +335,17 @@
                   </div>
                 </div>
 
-                <!-- Dedicatoria de Regalo -->
+                <!-- Dedicatoria de Regalo Navideño -->
                 <div class="pt-2">
                   <label class="flex items-center gap-2 text-xs font-bold text-bromia-cocoa cursor-pointer">
                     <input type="checkbox" v-model="isGift" class="rounded border-bromia-lavender text-bromia-berry focus:ring-bromia-berry" />
-                    <span>¿Es para regalo o celebración? 🎁 Incluir tarjetita dedicatoria</span>
+                    <span>¿Es para regalo navideño o novenas? 🎁 Incluir tarjetita con dedicatoria</span>
                   </label>
                   <textarea
                     v-if="isGift"
                     v-model="generalNote"
                     rows="2"
-                    placeholder="Escribe aquí el mensaje dulce para la tarjeta..."
+                    placeholder="Escribe aquí tu dedicatoria navideña para la tarjeta de regalo..."
                     class="w-full mt-2 px-3.5 py-2 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
                   />
                 </div>

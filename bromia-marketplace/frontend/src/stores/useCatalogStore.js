@@ -5,6 +5,7 @@ import { productApi } from '@/services/productService'
 const LOCAL_PRODUCTS_KEY = 'bromia_products_fallback_v1'
 
 const SEED_CATEGORIES = [
+  { id: 33, name: '🎄 Colección Navidad', slug: 'coleccion-navidad', subtitle: 'Edición especial para compartir y regalar', coverImageUrl: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=400&q=80' },
   { id: 1, name: 'Brookies & Blonkies', slug: 'brookies', subtitle: 'Mitad brownie, mitad galleta', coverImageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=400&q=80' },
   { id: 2, name: 'Cheesecakes', slug: 'cheesecakes', subtitle: 'Tu cheesecake a tu manera', coverImageUrl: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=400&q=80' },
   { id: 3, name: 'Chocobombas & Trufas', slug: 'chocobombas', subtitle: 'Por unidad o cajita regalo', coverImageUrl: 'https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=400&q=80' },
@@ -12,6 +13,74 @@ const SEED_CATEGORIES = [
 ]
 
 const SEED_PRODUCTS = [
+  {
+    id: 33,
+    name: 'Caja Navideña x4 Brookies Festivos',
+    tagline: '¡El regalo perfecto para tus Novenas! 🎄',
+    description: 'Caja de regalo navideña con 4 brookies artesanales con toppings festivos: 2 de Nutella con chispas doradas, 1 Red Velvet con frosting nevado y 1 de Canela Especiada.',
+    price: 34000,
+    compareAtPrice: 38000,
+    imageUrl: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=800&q=80',
+    badge: 'TEMPORADA',
+    active: true,
+    featured: true,
+    stock: 25,
+    flavorsAvailable: 'Surtida Navideña, Solo Nutella Dorada',
+    categoryId: 33,
+    categoryName: '🎄 Colección Navidad',
+    categorySlug: 'coleccion-navidad'
+  },
+  {
+    id: 34,
+    name: 'Chocobomba Navideña Muñeco de Nieve',
+    tagline: 'Para tardes frías y noches de novena ☕',
+    description: 'Esfera artesanal de chocolate belga rellena de cocoa especial, mini malvaviscos y chispas de nieve. ¡Solo sumérgela en leche caliente para disfrutar en familia!',
+    price: 14000,
+    compareAtPrice: null,
+    imageUrl: 'https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=800&q=80',
+    badge: 'TEMPORADA',
+    active: true,
+    featured: true,
+    stock: 35,
+    flavorsAvailable: 'Chocolate Blanco Nieve, Chocolate Oscuro Especiado',
+    categoryId: 33,
+    categoryName: '🎄 Colección Navidad',
+    categorySlug: 'coleccion-navidad'
+  },
+  {
+    id: 35,
+    name: 'Cheesecake Festivo Frutos del Bosque & Ciruela',
+    tagline: 'El postre estrella para tu cena de Navidad ✨',
+    description: 'Cheesecake frío con reducción artesanal de moras, arándanos y ciruelas maceradas al toque de canela navideña sobre base crocante de galleta y almendras.',
+    price: 54000,
+    compareAtPrice: 59000,
+    imageUrl: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=800&q=80',
+    badge: 'TEMPORADA',
+    active: true,
+    featured: true,
+    stock: 15,
+    flavorsAvailable: '6 Porciones, 10 Porciones',
+    categoryId: 33,
+    categoryName: '🎄 Colección Navidad',
+    categorySlug: 'coleccion-navidad'
+  },
+  {
+    id: 36,
+    name: 'Cajita x9 Trufas Navideñas Doradas',
+    tagline: 'El detalle más dulce de fin de año 🎁',
+    description: 'Caja de regalo con 9 trufitas artesanales: coco nevado, chocolate semiamargo con destellos dorados y praliné de almendras tostadas con lazo navideño.',
+    price: 30000,
+    compareAtPrice: null,
+    imageUrl: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=800&q=80',
+    badge: 'TEMPORADA',
+    active: true,
+    featured: true,
+    stock: 20,
+    flavorsAvailable: 'Surtida Festiva, Solo Chocolate Negro',
+    categoryId: 33,
+    categoryName: '🎄 Colección Navidad',
+    categorySlug: 'coleccion-navidad'
+  },
   {
     id: 1,
     name: 'Brookie Tradicional Nutella',
@@ -187,11 +256,15 @@ export const useCatalogStore = defineStore('catalog', () => {
         productApi.getAll({ includeInactive }),
         productApi.getCategories()
       ])
-      products.value = prodRes.data
-      if (catRes.data && catRes.data.length > 0) {
-        categories.value = catRes.data
+      if (Array.isArray(prodRes.data)) {
+        products.value = prodRes.data
+        if (Array.isArray(catRes.data) && catRes.data.length > 0) {
+          categories.value = catRes.data
+        }
+        backendConnected.value = true
+      } else {
+        throw new Error('Respuesta no válida del servidor')
       }
-      backendConnected.value = true
     } catch {
       backendConnected.value = false
       loadLocalProducts()

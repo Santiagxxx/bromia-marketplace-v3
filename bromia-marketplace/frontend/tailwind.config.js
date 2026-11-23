@@ -30,23 +30,40 @@ export default {
         'bromia-lg': '0 24px 48px -12px rgba(93, 50, 40, 0.22)',
       },
       animation: {
-        'float-slow': 'floatSlow 5s ease-in-out infinite',
-        'float-delayed': 'floatSlow 6s ease-in-out 1.5s infinite',
+        'float-slow': 'floatSlow 5.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite',
+        'float-delayed': 'floatSlow 6.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) 1.5s infinite',
         'wiggle-soft': 'wiggleSoft 2.5s ease-in-out infinite',
         'pulse-ring': 'pulseRing 2.2s cubic-bezier(0.24, 0, 0.38, 1) infinite',
+        'gentle-drift': 'gentleDrift 8s ease-in-out infinite',
+        'drift-delayed': 'gentleDrift 9s ease-in-out 2s infinite',
+        'breathe': 'breathe 4s ease-in-out infinite',
+        'bounce-subtle': 'bounceSubtle 3s ease-in-out infinite',
       },
       keyframes: {
         floatSlow: {
           '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
-          '50%': { transform: 'translateY(-10px) rotate(1.5deg)' },
+          '50%': { transform: 'translateY(-8px) rotate(1deg)' },
         },
         wiggleSoft: {
-          '0%, 100%': { transform: 'rotate(-3deg)' },
-          '50%': { transform: 'rotate(3deg)' },
+          '0%, 100%': { transform: 'rotate(-2.5deg)' },
+          '50%': { transform: 'rotate(2.5deg)' },
+        },
+        gentleDrift: {
+          '0%, 100%': { transform: 'translate(0px, 0px) scale(1)' },
+          '33%': { transform: 'translate(8px, -12px) scale(1.04)' },
+          '66%': { transform: 'translate(-8px, -6px) scale(0.97)' },
+        },
+        breathe: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.025)' },
+        },
+        bounceSubtle: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-5px)' },
         },
         pulseRing: {
           '0%': { transform: 'scale(0.96)', boxShadow: '0 0 0 0 rgba(217, 78, 143, 0.45)' },
-          '70%': { transform: 'scale(1)', boxShadow: '0 0 0 12px rgba(217, 78, 143, 0)' },
+          '70%': { transform: 'scale(1)', boxShadow: '0 0 0 10px rgba(217, 78, 143, 0)' },
           '100%': { transform: 'scale(0.96)', boxShadow: '0 0 0 0 rgba(217, 78, 143, 0)' },
         }
       }

@@ -8,9 +8,9 @@ const DEFAULT_CONFIG = {
   id: 1,
   storeName: 'Bromia',
   whatsappNumber: '573001234567',
-  heroTitle: 'No somos nosotros diciendo que está rico...',
-  heroSubtitle: 'Brookies recién horneados, cheesecakes a tu manera, chocobombas y trufitas artesanales hechas con amor.',
-  promoBannerText: '✨ Pedidos frescos del día • Compra fácil con envío directo a WhatsApp ✨',
+  heroTitle: 'La magia de la Navidad se comparte con Bromia 🎄',
+  heroSubtitle: 'Edición especial navideña: Brookies festivos con Nutella y canela, chocobombas de chocolate caliente y cajitas de regalo ideales para tus novenas.',
+  promoBannerText: '🎄 Especial Navideño: Reserva tus antojitos y regalos de Novenas con anticipación • Envíos en Bogotá ✨',
   instagramHandle: '@bromiaoficial',
   city: 'Bogotá, Colombia'
 }
@@ -22,8 +22,10 @@ export const useStoreConfigStore = defineStore('storeConfig', () => {
   async function fetchConfig() {
     try {
       const { data } = await configApi.getConfig()
-      config.value = data
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+      if (data && typeof data === 'object' && data.heroTitle) {
+        config.value = data
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+      }
     } catch {
       // Mantiene configuración local si el backend aún no está encendido
     }

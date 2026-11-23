@@ -29,9 +29,9 @@ public class DataSeeder implements CommandLineRunner {
                     .id(1L)
                     .storeName("Bromia")
                     .whatsappNumber("573001234567")
-                    .heroTitle("No somos nosotros diciendo que está rico...")
-                    .heroSubtitle("Brookies melcochudos, cheesecakes a tu manera, chocobombas y corazones de mousse listos para regalar o antojarte hoy.")
-                    .promoBannerText("✨ Pedidos frescos del día • Haz tu pedido directo por WhatsApp ✨")
+                    .heroTitle("La magia de la Navidad se comparte con Bromia 🎄")
+                    .heroSubtitle("Edición especial navideña: Brookies festivos con Nutella y canela, chocobombas de chocolate caliente y cajitas de regalo ideales para tus novenas.")
+                    .promoBannerText("🎄 Especial Navideño: Reserva tus antojitos y regalos de Novenas con anticipación • Envíos en Bogotá ✨")
                     .instagramHandle("@bromiaoficial")
                     .city("Bogotá, Colombia")
                     .build());
@@ -183,6 +183,78 @@ public class DataSeeder implements CommandLineRunner {
                             .stock(15)
                             .flavorsAvailable("Maracuyá + Almendras + Fresa")
                             .category(regalos)
+                            .build()
+            ));
+        }
+
+        // Asegurar categoría y productos de Colección Navidad permanente
+        Category navCat = categoryRepository.findBySlug("coleccion-navidad").orElseGet(() ->
+                categoryRepository.save(Category.builder()
+                        .name("🎄 Colección Navidad")
+                        .slug("coleccion-navidad")
+                        .subtitle("Edición especial festiva")
+                        .coverImageUrl("https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=600&q=80")
+                        .displayOrder(0)
+                        .build())
+        );
+
+        if (productRepository.searchProducts("coleccion-navidad", null, false).isEmpty()) {
+            productRepository.saveAll(List.of(
+                    Product.builder()
+                            .name("Caja Navideña x4 Brookies Festivos")
+                            .tagline("Edición especial con canela y Nutella")
+                            .description("Caja regalo navideña con 4 brookies decorados con chispas de nieve, canela y Nutella cremosa. Incluye tarjeta de deseos.")
+                            .price(new BigDecimal("34000"))
+                            .compareAtPrice(new BigDecimal("38000"))
+                            .imageUrl("https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=800&q=80")
+                            .badge(ProductBadge.TEMPORADA)
+                            .featured(true)
+                            .active(true)
+                            .stock(25)
+                            .flavorsAvailable("Nutella Navideño, Canela Crunch, Oreo Festivo")
+                            .category(navCat)
+                            .build(),
+
+                    Product.builder()
+                            .name("Chocobomba Navideña Muñeco de Nieve")
+                            .tagline("¡Para chocolate caliente en tus novenas!")
+                            .description("Esfera artesanal de chocolate blanco y chispas doradas rellena de malvaviscos navideños y cocoa premium.")
+                            .price(new BigDecimal("14000"))
+                            .imageUrl("https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=800&q=80")
+                            .badge(ProductBadge.TEMPORADA)
+                            .featured(true)
+                            .active(true)
+                            .stock(50)
+                            .flavorsAvailable("Chocolate Blanco Vainilla, Chocolate con Leche y Canela")
+                            .category(navCat)
+                            .build(),
+
+                    Product.builder()
+                            .name("Cheesecake Festivo Frutos del Bosque & Ciruela")
+                            .tagline("El postre soñado para tu cena navideña")
+                            .description("Cheesecake suave con reducción navideña de frutos del bosque, ciruelas caramelizadas y galleta especiada.")
+                            .price(new BigDecimal("54000"))
+                            .imageUrl("https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=800&q=80")
+                            .badge(ProductBadge.TEMPORADA)
+                            .featured(true)
+                            .active(true)
+                            .stock(15)
+                            .flavorsAvailable("6 Porciones, 10 Porciones")
+                            .category(navCat)
+                            .build(),
+
+                    Product.builder()
+                            .name("Cajita x9 Trufas Navideñas Doradas")
+                            .tagline("El detalle elegante para compartir")
+                            .description("Nueve trufas artesanales con brillo dorado comestible, chocolate semiamargo y toques de avellanas tostadas.")
+                            .price(new BigDecimal("30000"))
+                            .imageUrl("https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=800&q=80")
+                            .badge(ProductBadge.TEMPORADA)
+                            .featured(true)
+                            .active(true)
+                            .stock(30)
+                            .flavorsAvailable("Avellana Dorada, Chocolate 70%, Coco Nevado")
+                            .category(navCat)
                             .build()
             ));
         }
