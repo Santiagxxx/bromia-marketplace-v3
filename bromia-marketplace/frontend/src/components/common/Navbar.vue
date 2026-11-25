@@ -59,23 +59,6 @@
         </div>
 
         <div class="flex items-center gap-2.5 sm:gap-3">
-          <RouterLink
-            v-if="route.path !== '/admin'"
-            to="/admin"
-            class="inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-bromia-lavender/70 hover:bg-bromia-lavender text-bromia-cocoa transition-all hover:shadow-sm"
-          >
-            <LayoutDashboard class="w-4 h-4" />
-            <span>Panel Admin</span>
-          </RouterLink>
-
-          <RouterLink
-            v-else
-            to="/"
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-bromia-lavender text-bromia-cocoa hover:bg-bromia-lavender-deep transition-all"
-          >
-            <Store class="w-4 h-4" />
-            <span>Ver Tienda</span>
-          </RouterLink>
 
           <button
             @click="cartStore.openCart()"
