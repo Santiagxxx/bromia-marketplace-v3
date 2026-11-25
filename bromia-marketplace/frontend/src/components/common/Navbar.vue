@@ -28,7 +28,7 @@
           </a>
           <span class="opacity-40">•</span>
           <a
-            :href="'https://wa.me/' + (configStore.config.whatsappNumber || '573001234567').replace(/\D/g, '')"
+            :href="'https://wa.me/' + (configStore.config.whatsappNumber || '573219879552').replace(/\D/g, '')"
             target="_blank"
             rel="noopener noreferrer"
             class="hover:text-amber-200 transition-all hover:scale-105 flex items-center gap-1 opacity-90 hover:opacity-100"

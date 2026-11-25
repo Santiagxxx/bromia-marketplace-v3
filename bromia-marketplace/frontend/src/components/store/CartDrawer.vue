@@ -139,17 +139,17 @@
               </div>
             </template>
 
-            <!-- PASO 2: PROGRAMACIÓN DE ENTREGA (ESTILO BEIKED) -->
+            <!-- PASO 2: PROGRAMACIÓN DE ENTREGA Y DETALLES OBLIGATORIOS -->
             <template v-else-if="currentStep === 2">
               <!-- Modalidad de entrega: Domicilio vs Recoger -->
               <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-bromia-cocoa mb-2">
-                  1. Modalidad de Entrega:
+                  1. Modalidad de Entrega: <span class="text-bromia-berry">*</span>
                 </label>
                 <div class="grid grid-cols-2 gap-2">
                   <button
                     type="button"
-                    @click="deliveryMode = 'domicilio'"
+                    @click="deliveryMode = 'domicilio'; step2Error = ''"
                     class="p-3 rounded-2xl border text-left transition-all flex flex-col gap-1"
                     :class="deliveryMode === 'domicilio'
                       ? 'bg-bromia-cocoa text-white border-bromia-cocoa shadow-sm'
@@ -164,7 +164,7 @@
 
                   <button
                     type="button"
-                    @click="deliveryMode = 'recoger'"
+                    @click="deliveryMode = 'recoger'; step2Error = ''"
                     class="p-3 rounded-2xl border text-left transition-all flex flex-col gap-1"
                     :class="deliveryMode === 'recoger'
                       ? 'bg-bromia-cocoa text-white border-bromia-cocoa shadow-sm'
@@ -179,11 +179,11 @@
                 </div>
               </div>
 
-              <!-- SELECTOR DE FECHA DE ENTREGA: MAÑANA O EN 2 DÍAS (REPLICANDO BEIKED) -->
+              <!-- SELECTOR DE FECHA DE ENTREGA -->
               <div>
                 <div class="flex items-center justify-between mb-2">
                   <label class="block text-xs font-bold uppercase tracking-wider text-bromia-cocoa">
-                    2. ¿Cuándo quieres recibirlo?:
+                    2. ¿Cuándo quieres recibirlo?: <span class="text-bromia-berry">*</span>
                   </label>
                   <span class="text-[10px] text-bromia-berry font-bold uppercase tracking-wider">Anticipación garantizada</span>
                 </div>
@@ -192,7 +192,7 @@
                   <!-- Opción 1: Mañana -->
                   <button
                     type="button"
-                    @click="selectedDateOption = 'tomorrow'"
+                    @click="selectedDateOption = 'tomorrow'; step2Error = ''"
                     class="p-3 rounded-2xl border text-center transition-all flex flex-col items-center justify-center relative"
                     :class="selectedDateOption === 'tomorrow'
                       ? 'bg-gradient-to-b from-bromia-berry via-bromia-berry to-bromia-cocoa text-white border-bromia-berry shadow-sm ring-2 ring-bromia-berry/30'
@@ -209,7 +209,7 @@
                   <!-- Opción 2: En 2 días -->
                   <button
                     type="button"
-                    @click="selectedDateOption = 'twoDays'"
+                    @click="selectedDateOption = 'twoDays'; step2Error = ''"
                     class="p-3 rounded-2xl border text-center transition-all flex flex-col items-center justify-center relative"
                     :class="selectedDateOption === 'twoDays'
                       ? 'bg-gradient-to-b from-bromia-berry via-bromia-berry to-bromia-cocoa text-white border-bromia-berry shadow-sm ring-2 ring-bromia-berry/30'
@@ -226,7 +226,7 @@
                   <!-- Opción 3: Otra fecha posterior -->
                   <button
                     type="button"
-                    @click="selectedDateOption = 'custom'"
+                    @click="selectedDateOption = 'custom'; step2Error = ''"
                     class="p-3 rounded-2xl border text-center transition-all flex flex-col items-center justify-center relative"
                     :class="selectedDateOption === 'custom'
                       ? 'bg-gradient-to-b from-bromia-berry via-bromia-berry to-bromia-cocoa text-white border-bromia-berry shadow-sm ring-2 ring-bromia-berry/30'
@@ -239,16 +239,18 @@
                   </button>
                 </div>
 
-                <!-- Input de fecha personalizada si elige 'Otra fecha' -->
+                <!-- Input de fecha personalizada obligatorio si elige 'Otra fecha' -->
                 <div v-if="selectedDateOption === 'custom'" class="mt-2.5">
                   <input
                     v-model="customDate"
+                    @input="step2Error = ''"
                     type="date"
+                    required
                     :min="minCustomDate"
                     class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm font-semibold text-bromia-cocoa focus:outline-none focus:border-bromia-cocoa"
                   />
                   <p class="text-[11px] text-bromia-cocoa-light mt-1">
-                    * Mínimo 1 día de anticipación para garantizar horneado fresco.
+                    - Mínimo 1 día de anticipación para garantizar horneado fresco.
                   </p>
                 </div>
               </div>
@@ -256,12 +258,12 @@
               <!-- SELECTOR DE FRANJA HORARIA -->
               <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-bromia-cocoa mb-2">
-                  3. Franja Horaria de Entrega:
+                  3. Franja Horaria de Entrega: <span class="text-bromia-berry">*</span>
                 </label>
                 <div class="grid grid-cols-2 gap-2">
                   <button
                     type="button"
-                    @click="selectedTimeSlot = 'morning'"
+                    @click="selectedTimeSlot = 'morning'; step2Error = ''"
                     class="py-2.5 px-3 rounded-xl text-xs font-bold border transition-all text-left flex items-center gap-2"
                     :class="selectedTimeSlot === 'morning'
                       ? 'bg-bromia-cocoa text-white border-bromia-cocoa'
@@ -276,7 +278,7 @@
 
                   <button
                     type="button"
-                    @click="selectedTimeSlot = 'afternoon'"
+                    @click="selectedTimeSlot = 'afternoon'; step2Error = ''"
                     class="py-2.5 px-3 rounded-xl text-xs font-bold border transition-all text-left flex items-center gap-2"
                     :class="selectedTimeSlot === 'afternoon'
                       ? 'bg-bromia-cocoa text-white border-bromia-cocoa'
@@ -291,46 +293,68 @@
                 </div>
               </div>
 
-              <!-- DATOS DE CONTACTO Y DIRECCIÓN -->
+              <!-- DATOS DE CONTACTO Y DIRECCIÓN (OBLIGATORIOS) -->
               <div class="space-y-3 pt-1">
-                <label class="block text-xs font-bold uppercase tracking-wider text-bromia-cocoa">
-                  4. Datos de Quien Recibe:
-                </label>
+                <div class="flex items-center justify-between">
+                  <label class="block text-xs font-bold uppercase tracking-wider text-bromia-cocoa">
+                    4. Datos de Quien Recibe: <span class="text-bromia-berry">*</span>
+                  </label>
+                  <span class="text-[10px] font-semibold text-bromia-cocoa-light">* Campos obligatorios</span>
+                </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <input
-                    v-model="customerName"
-                    type="text"
-                    placeholder="Tu nombre completo"
-                    class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
-                  />
-                  <input
-                    v-model="customerPhone"
-                    type="tel"
-                    placeholder="Celular / WhatsApp (300...)"
-                    class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
-                  />
+                  <div>
+                    <input
+                      v-model.trim="customerName"
+                      @input="step2Error = ''"
+                      type="text"
+                      required
+                      placeholder="Tu nombre completo *"
+                      class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
+                      :class="submittedStep2 && !customerName ? 'border-red-400 bg-red-50/40' : 'border-bromia-lavender'"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      v-model.trim="customerPhone"
+                      @input="step2Error = ''"
+                      type="tel"
+                      required
+                      placeholder="Celular / WhatsApp (300...) *"
+                      class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
+                      :class="submittedStep2 && !isPhoneValid ? 'border-red-400 bg-red-50/40' : 'border-bromia-lavender'"
+                    />
+                  </div>
                 </div>
 
                 <div v-if="deliveryMode === 'domicilio'" class="space-y-2">
                   <input
-                    v-model="address"
+                    v-model.trim="address"
+                    @input="step2Error = ''"
                     type="text"
-                    placeholder="Dirección exacta (Calle, Carrera, N°)"
-                    class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
+                    required
+                    placeholder="Dirección exacta (Calle, Carrera, N°) *"
+                    class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
+                    :class="submittedStep2 && !address ? 'border-red-400 bg-red-50/40' : 'border-bromia-lavender'"
                   />
                   <div class="grid grid-cols-2 gap-2">
                     <input
-                      v-model="neighborhood"
+                      v-model.trim="neighborhood"
+                      @input="step2Error = ''"
                       type="text"
-                      placeholder="Barrio o sector"
-                      class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
+                      required
+                      placeholder="Barrio o sector *"
+                      class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
+                      :class="submittedStep2 && !neighborhood ? 'border-red-400 bg-red-50/40' : 'border-bromia-lavender'"
                     />
                     <input
-                      v-model="city"
+                      v-model.trim="city"
+                      @input="step2Error = ''"
                       type="text"
-                      placeholder="Ciudad (ej: Bogotá)"
-                      class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
+                      required
+                      placeholder="Ciudad (ej: Bogotá) *"
+                      class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
+                      :class="submittedStep2 && !city ? 'border-red-400 bg-red-50/40' : 'border-bromia-lavender'"
                     />
                   </div>
                 </div>
@@ -338,94 +362,61 @@
                 <!-- Dedicatoria de Regalo Navideño -->
                 <div class="pt-2">
                   <label class="flex items-center gap-2 text-xs font-bold text-bromia-cocoa cursor-pointer">
-                    <input type="checkbox" v-model="isGift" class="rounded border-bromia-lavender text-bromia-berry focus:ring-bromia-berry" />
+                    <input
+                      type="checkbox"
+                      v-model="isGift"
+                      @change="step2Error = ''"
+                      class="rounded border-bromia-lavender text-bromia-berry focus:ring-bromia-berry"
+                    />
                     <span>¿Es para regalo navideño o novenas? 🎁 Incluir tarjetita con dedicatoria</span>
                   </label>
                   <textarea
                     v-if="isGift"
-                    v-model="generalNote"
+                    v-model.trim="generalNote"
+                    @input="step2Error = ''"
                     rows="2"
-                    placeholder="Escribe aquí tu dedicatoria navideña para la tarjeta de regalo..."
-                    class="w-full mt-2 px-3.5 py-2 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
+                    required
+                    placeholder="Escribe aquí tu dedicatoria navideña para la tarjeta de regalo... *"
+                    class="w-full mt-2 px-3.5 py-2 rounded-xl bg-bromia-lavender-soft border text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
+                    :class="submittedStep2 && isGift && !generalNote ? 'border-red-400 bg-red-50/40' : 'border-bromia-lavender'"
                   />
                 </div>
               </div>
+
+              <!-- Alerta de validación de campos obligatorios -->
+              <div
+                v-if="step2Error"
+                class="p-3 rounded-xl bg-red-50 border border-red-200 text-xs font-semibold text-red-700 flex items-center gap-2"
+              >
+                <AlertCircle class="w-4 h-4 shrink-0 text-red-600" />
+                <span>{{ step2Error }}</span>
+              </div>
             </template>
 
-            <!-- PASO 3: PASARELA DE PAGOS (ESTILO BEIKED / WOMPI) -->
+            <!-- PASO 3: PASARELA DE PAGOS (ÚNICA OPCIÓN: WOMPI) -->
             <template v-else-if="currentStep === 3">
               <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-bromia-cocoa mb-2">
-                  Elige tu Método de Pago:
+                  Método de Pago Único:
                 </label>
 
-                <div class="space-y-2.5">
-                  <!-- Opción A: Pasarela Wompi (Bancolombia, PSE, Nequi, Tarjetas) -->
-                  <div
-                    @click="paymentMethod = 'wompi'"
-                    class="p-4 rounded-2xl border cursor-pointer transition-all flex items-start gap-3.5"
-                    :class="paymentMethod === 'wompi'
-                      ? 'bg-white border-bromia-berry ring-2 ring-bromia-berry/20 shadow-sm'
-                      : 'bg-bromia-lavender-soft/40 border-bromia-lavender hover:bg-white'"
-                  >
-                    <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5" :class="paymentMethod === 'wompi' ? 'border-bromia-berry bg-bromia-berry text-white' : 'border-bromia-cocoa/30'">
-                      <div v-if="paymentMethod === 'wompi'" class="w-2 h-2 rounded-full bg-white"></div>
-                    </div>
-                    <div class="flex-1">
-                      <div class="flex items-center justify-between">
-                        <span class="font-display font-bold text-sm text-bromia-cocoa">Pasarela Digital Wompi</span>
-                        <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-bromia-lavender text-bromia-cocoa">Recomendado</span>
-                      </div>
-                      <p class="text-xs text-bromia-cocoa-light mt-0.5">
-                        Paga en línea con <strong>Bancolombia, PSE, Nequi</strong> o <strong>Tarjetas</strong>.
-                      </p>
-                      <div class="flex items-center gap-1.5 mt-2">
-                        <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-900">Bancolombia</span>
-                        <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-900">PSE</span>
-                        <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-900">Nequi</span>
-                        <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-800">Visa/Mastercard</span>
-                      </div>
-                    </div>
+                <div class="p-4 rounded-2xl border bg-white border-bromia-berry ring-2 ring-bromia-berry/20 shadow-sm flex items-start gap-3.5">
+                  <div class="w-5 h-5 rounded-full border-2 border-bromia-berry bg-bromia-berry text-white flex items-center justify-center shrink-0 mt-0.5">
+                    <div class="w-2 h-2 rounded-full bg-white"></div>
                   </div>
-
-                  <!-- Opción B: Transferencia Nequi / Daviplata -->
-                  <div
-                    @click="paymentMethod = 'nequi'"
-                    class="p-4 rounded-2xl border cursor-pointer transition-all flex items-start gap-3.5"
-                    :class="paymentMethod === 'nequi'
-                      ? 'bg-white border-bromia-berry ring-2 ring-bromia-berry/20 shadow-sm'
-                      : 'bg-bromia-lavender-soft/40 border-bromia-lavender hover:bg-white'"
-                  >
-                    <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5" :class="paymentMethod === 'nequi' ? 'border-bromia-berry bg-bromia-berry text-white' : 'border-bromia-cocoa/30'">
-                      <div v-if="paymentMethod === 'nequi'" class="w-2 h-2 rounded-full bg-white"></div>
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="font-display font-bold text-sm text-bromia-cocoa">Pasarela Digital Wompi</span>
+                      <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-bromia-lavender text-bromia-cocoa">Único medio</span>
                     </div>
-                    <div class="flex-1">
-                      <span class="font-display font-bold text-sm text-bromia-cocoa">Transferencia Directa Nequi / Daviplata</span>
-                      <p class="text-xs text-bromia-cocoa-light mt-0.5">
-                        Transfiere a la cuenta oficial de Bromia y adjuntas el comprobante por WhatsApp.
-                      </p>
-                      <p class="text-xs font-mono font-bold text-bromia-berry mt-1.5">
-                        Nequi: {{ configStore.config.whatsappNumber || '300 123 4567' }}
-                      </p>
-                    </div>
-                  </div>
-
-                  <!-- Opción C: Contra entrega -->
-                  <div
-                    @click="paymentMethod = 'contraentrega'"
-                    class="p-4 rounded-2xl border cursor-pointer transition-all flex items-start gap-3.5"
-                    :class="paymentMethod === 'contraentrega'
-                      ? 'bg-white border-bromia-berry ring-2 ring-bromia-berry/20 shadow-sm'
-                      : 'bg-bromia-lavender-soft/40 border-bromia-lavender hover:bg-white'"
-                  >
-                    <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5" :class="paymentMethod === 'contraentrega' ? 'border-bromia-berry bg-bromia-berry text-white' : 'border-bromia-cocoa/30'">
-                      <div v-if="paymentMethod === 'contraentrega'" class="w-2 h-2 rounded-full bg-white"></div>
-                    </div>
-                    <div class="flex-1">
-                      <span class="font-display font-bold text-sm text-bromia-cocoa">Pago Contra Entrega</span>
-                      <p class="text-xs text-bromia-cocoa-light mt-0.5">
-                        Pagas en efectivo o datáfono en el momento exacto en que recibes tus antojitos.
-                      </p>
+                    <p class="text-xs text-bromia-cocoa-light mt-0.5">
+                      Paga de forma rápida y segura en línea con <strong>Bancolombia, PSE, Nequi</strong> o <strong>Tarjetas</strong>.
+                    </p>
+                    <div class="flex flex-wrap items-center gap-1.5 mt-2">
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-900">Bancolombia</span>
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-900">PSE</span>
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-900">Nequi</span>
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-800">Visa/Mastercard</span>
                     </div>
                   </div>
                 </div>
@@ -442,6 +433,11 @@
                 </div>
 
                 <div class="flex justify-between text-bromia-cocoa-light">
+                  <span>Recibe:</span>
+                  <span class="font-semibold text-bromia-cocoa">{{ customerName }} ({{ customerPhone }})</span>
+                </div>
+
+                <div class="flex justify-between text-bromia-cocoa-light">
                   <span>Horario de despacho:</span>
                   <span class="font-semibold text-bromia-cocoa">{{ activeTimeSlotText }}</span>
                 </div>
@@ -451,9 +447,11 @@
                   <span class="font-semibold text-bromia-cocoa">{{ deliveryMode === 'domicilio' ? '🛵 Domicilio' : '🛍️ Recoger en tienda' }}</span>
                 </div>
 
-                <div v-if="deliveryMode === 'domicilio' && address" class="flex justify-between text-bromia-cocoa-light">
+                <div v-if="deliveryMode === 'domicilio'" class="flex justify-between text-bromia-cocoa-light">
                   <span>Destino:</span>
-                  <span class="font-semibold text-bromia-cocoa truncate max-w-[200px]">{{ address }}</span>
+                  <span class="font-semibold text-bromia-cocoa truncate max-w-[200px]">
+                    {{ address }}, {{ neighborhood }} ({{ city }})
+                  </span>
                 </div>
               </div>
             </template>
@@ -510,24 +508,15 @@
                 </button>
               </div>
 
-              <!-- Botones Paso 3: Volver / Pagar o Enviar Orden -->
+              <!-- Botones Paso 3: Solo Wompi / Volver -->
               <div v-else-if="currentStep === 3" class="space-y-2">
                 <button
-                  v-if="paymentMethod === 'wompi'"
+                  type="button"
                   @click="openWompiGateway"
                   class="w-full py-4 px-6 rounded-full bg-gradient-to-r from-bromia-berry to-bromia-cocoa hover:opacity-95 text-white font-bold text-sm shadow-bromia flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-95"
                 >
                   <Lock class="w-4 h-4 text-bromia-lavender" />
                   <span>Pagar {{ formatCOP(grandTotal) }} con Pasarela Wompi</span>
-                </button>
-
-                <button
-                  v-else
-                  @click="checkoutDirectOrder"
-                  class="w-full py-4 px-6 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-95"
-                >
-                  <MessageCircle class="w-5 h-5" />
-                  <span>Confirmar y Enviar Pedido a WhatsApp</span>
                 </button>
 
                 <button
@@ -565,11 +554,10 @@ import {
   ShoppingBag,
   X,
   Cookie,
-  MessageCircle,
   Calendar,
   Clock,
-  Sparkles,
-  Lock
+  Lock,
+  AlertCircle
 } from 'lucide-vue-next'
 import { useCartStore } from '@/stores/useCartStore'
 import { useStoreConfigStore } from '@/stores/useStoreConfigStore'
@@ -593,7 +581,9 @@ const address = ref('')
 const neighborhood = ref('')
 const city = ref('Bogotá')
 const generalNote = ref('')
-const paymentMethod = ref('wompi') // 'wompi' | 'nequi' | 'contraentrega'
+
+const step2Error = ref('')
+const submittedStep2 = ref(false)
 
 const isWompiOpen = ref(false)
 const currentOrderNumber = ref('BRO-' + Math.floor(1000 + Math.random() * 9000))
@@ -649,36 +639,82 @@ const activeTimeSlotText = computed(() => {
 })
 
 const deliveryFee = computed(() => {
-  return deliveryMode.value === 'domicilio' ? 6000 : 0
+  return deliveryMode.value === 'domicilio' ? 10000 : 0
 })
 
 const grandTotal = computed(() => {
   return cartStore.totalAmount + deliveryFee.value
 })
 
+const isPhoneValid = computed(() => {
+  const digits = customerPhone.value.replace(/\D/g, '')
+  return digits.length >= 7
+})
+
+function validateStep2() {
+  submittedStep2.value = true
+
+  if (selectedDateOption.value === 'custom' && !customDate.value) {
+    step2Error.value = 'Selecciona una fecha de entrega en el calendario.'
+    return false
+  }
+  if (!customerName.value.trim() || customerName.value.trim().length < 3) {
+    step2Error.value = 'Ingresa el nombre completo de quien recibe el pedido.'
+    return false
+  }
+  if (!isPhoneValid.value) {
+    step2Error.value = 'Ingresa un número de celular o WhatsApp válido (mínimo 7 dígitos).'
+    return false
+  }
+  if (deliveryMode.value === 'domicilio') {
+    if (!address.value.trim()) {
+      step2Error.value = 'Ingresa la dirección exacta para el domicilio.'
+      return false
+    }
+    if (!neighborhood.value.trim()) {
+      step2Error.value = 'Ingresa el barrio o sector de entrega.'
+      return false
+    }
+    if (!city.value.trim()) {
+      step2Error.value = 'Ingresa la ciudad de entrega.'
+      return false
+    }
+  }
+  if (isGift.value && !generalNote.value.trim()) {
+    step2Error.value = 'Escribe la dedicatoria navideña para la tarjeta de regalo.'
+    return false
+  }
+
+  step2Error.value = ''
+  return true
+}
+
 function goToStep(step) {
   if (step === 2 && cartStore.items.length === 0) return
-  if (step === 3 && !customerName.value.trim()) {
-    currentStep.value = 2
-    return
+  if (step === 3) {
+    if (!validateStep2()) {
+      currentStep.value = 2
+      return
+    }
   }
   currentStep.value = step
 }
 
 function validateStep2AndContinue() {
-  if (!customerName.value.trim()) {
-    customerName.value = 'Cliente Bromia'
-  }
+  if (!validateStep2()) return
   currentStep.value = 3
 }
 
 function openWompiGateway() {
+  if (!validateStep2()) {
+    currentStep.value = 2
+    return
+  }
   isWompiOpen.value = true
 }
 
 function handlePaymentSuccess(data) {
-  // El pago se aprobó en la pasarela
-  console.log('Pago aprobado en pasarela:', data)
+  console.log('Pago aprobado en pasarela Wompi:', data)
 }
 
 function handleNotifyWhatsApp(data) {
@@ -706,40 +742,13 @@ function handleNotifyWhatsApp(data) {
   finishOrderFlow()
 }
 
-function checkoutDirectOrder() {
-  const methodMap = {
-    nequi: 'Transferencia Directa Nequi / Daviplata',
-    contraentrega: 'Pago Contra Entrega'
-  }
-
-  const url = buildWhatsAppOrderUrl({
-    whatsappNumber: configStore.config.whatsappNumber,
-    orderNumber: currentOrderNumber.value,
-    items: cartStore.items,
-    customerName: customerName.value,
-    customerPhone: customerPhone.value,
-    deliveryMode: deliveryMode.value,
-    deliveryDateText: activeDeliveryDateText.value,
-    timeSlotText: activeTimeSlotText.value,
-    address: address.value,
-    neighborhood: neighborhood.value,
-    city: city.value,
-    generalNote: generalNote.value,
-    paymentMethod: methodMap[paymentMethod.value] || 'Por acordar',
-    paymentStatus: paymentMethod.value === 'contraentrega' ? 'Pendiente al recibir 💵' : 'Comprobante adjunto 📄',
-    deliveryFee: deliveryFee.value,
-    total: grandTotal.value
-  })
-
-  window.open(url, '_blank')
-  finishOrderFlow()
-}
-
 function finishOrderFlow() {
   isWompiOpen.value = false
   cartStore.clearCart()
   cartStore.closeCart()
   currentStep.value = 1
+  submittedStep2.value = false
+  step2Error.value = ''
   currentOrderNumber.value = 'BRO-' + Math.floor(1000 + Math.random() * 9000)
 }
 </script>

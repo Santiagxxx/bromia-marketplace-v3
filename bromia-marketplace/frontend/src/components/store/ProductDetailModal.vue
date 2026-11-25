@@ -21,11 +21,11 @@
             <X class="w-5 h-5" />
           </button>
 
-          <div class="bg-bromia-lavender/50 relative min-h-[260px]">
+          <div class="bg-gradient-to-b from-[#FFFDF9] to-[#FFF5F2] relative min-h-[260px] flex items-center justify-center p-6">
             <img
               :src="product.imageUrl"
               :alt="product.name"
-              class="w-full h-full object-cover"
+              class="max-h-72 w-full object-contain filter drop-shadow-[0_12px_20px_rgba(66,32,18,0.2)]"
             />
           </div>
 

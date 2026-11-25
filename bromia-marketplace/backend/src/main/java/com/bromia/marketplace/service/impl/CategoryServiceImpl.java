@@ -31,7 +31,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryResponseDTO createCategory(CategoryRequestDTO request) {
-        String slug = toSlug(request.getName());
+        String slug = (request.getSlug() != null && !request.getSlug().isBlank())
+                ? request.getSlug()
+                : toSlug(request.getName());
         Category category = Category.builder()
                 .name(request.getName())
                 .slug(slug)

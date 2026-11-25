@@ -142,29 +142,31 @@
                 <BromiaLogo :size="48" :show-handle="false" />
               </div>
 
-              <!-- Foto con badge 'Horneado Navideño' -->
-              <div class="relative rounded-2xl overflow-hidden aspect-[4/3] bg-white shadow-inner group">
+              <!-- Foto con badge 'Horneado Navideño' con producto real Bromia -->
+              <div class="relative rounded-2xl overflow-hidden aspect-[4/3] bg-gradient-to-b from-[#FFFDF9] to-[#FFF5F2] shadow-inner group flex items-center justify-center p-4">
                 <img
-                  src="https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=800&q=80"
+                  src="/products/caja-brookies.png"
                   alt="Brookies Festivos de Navidad Bromia"
-                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  class="w-full h-full object-contain filter drop-shadow-[0_8px_12px_rgba(66,32,18,0.2)] hover:scale-105 transition-transform duration-700"
                 />
                 <span class="absolute top-2.5 right-2.5 text-[11px] font-bold px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md text-bromia-cocoa shadow-sm flex items-center gap-1.5">
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                  Horneado Navideño 🎄
+                  Horneado Artesanal 🎄
                 </span>
               </div>
 
-              <!-- Destacado secundario: Chocobomba Navideña para chocolate caliente -->
+              <!-- Destacado secundario: Chocobomba Navideña para chocolate caliente con producto real -->
               <div class="mt-3.5 bg-white/95 backdrop-blur-md p-2.5 sm:p-3 rounded-2xl border border-bromia-lavender/90 shadow-sm flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3 min-w-0">
-                  <img
-                    src="https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=200&q=80"
-                    alt="Chocobomba Navideña Bromia"
-                    class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl object-cover shrink-0 shadow-sm"
-                  />
+                  <div class="w-12 h-12 rounded-xl bg-gradient-to-b from-[#FFFDF9] to-[#FFF5F2] border border-bromia-lavender/60 p-1 flex items-center justify-center shrink-0 shadow-sm">
+                    <img
+                      src="/products/chocobomb-oreo.png"
+                      alt="Chocobomba Artesanal Bromia"
+                      class="w-full h-full object-contain filter drop-shadow-sm"
+                    />
+                  </div>
                   <div class="truncate">
-                    <p class="font-display font-bold text-xs sm:text-sm text-bromia-cocoa truncate">Chocobomba Navideña ☕</p>
+                    <p class="font-display font-bold text-xs sm:text-sm text-bromia-cocoa truncate">Chocobomba Oreo ☕</p>
                     <p class="text-[11px] sm:text-xs text-bromia-berry font-semibold truncate">¡Para chocolate caliente en familia!</p>
                   </div>
                 </div>
@@ -191,7 +193,7 @@ import { useStoreConfigStore } from '@/stores/useStoreConfigStore'
 const configStore = useStoreConfigStore()
 
 function openDirectWhatsApp() {
-  const phone = String(configStore.config.whatsappNumber || '573001234567').replace(/\D/g, '')
+  const phone = String(configStore.config.whatsappNumber || '573219879552').replace(/\D/g, '')
   const text = encodeURIComponent('¡Hola Bromia! 🍫 Quisiera cotizar un postre personalizado.')
   window.open(`https://wa.me/${phone}?text=${text}`, '_blank')
 }

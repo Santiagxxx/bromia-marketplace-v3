@@ -70,11 +70,13 @@
             >
               <td class="py-3.5 px-5">
                 <div class="flex items-center gap-3">
-                  <img
-                    :src="prod.imageUrl"
-                    :alt="prod.name"
-                    class="w-12 h-12 rounded-xl object-cover border border-bromia-lavender shrink-0"
-                  />
+                  <div class="w-12 h-12 rounded-xl bg-gradient-to-b from-[#FFFDF9] to-[#FFF5F2] border border-bromia-lavender p-1 flex items-center justify-center shrink-0 overflow-hidden">
+                    <img
+                      :src="prod.imageUrl"
+                      :alt="prod.name"
+                      class="w-full h-full object-contain filter drop-shadow-sm"
+                    />
+                  </div>
                   <div>
                     <p class="font-display font-bold text-bromia-cocoa">{{ prod.name }}</p>
                     <p class="text-xs text-bromia-cocoa-light line-clamp-1 max-w-xs">{{ prod.tagline || prod.description }}</p>

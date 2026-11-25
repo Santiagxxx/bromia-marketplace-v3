@@ -28,7 +28,7 @@ public class Category {
     @Column(length = 255)
     private String subtitle;
 
-    @Column(length = 500)
+    @Column(columnDefinition = "TEXT")
     private String coverImageUrl;
 
     @Column(nullable = false)

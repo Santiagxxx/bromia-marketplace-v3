@@ -7,10 +7,10 @@ const STORAGE_KEY = 'bromia_store_config_v1'
 const DEFAULT_CONFIG = {
   id: 1,
   storeName: 'Bromia',
-  whatsappNumber: '573001234567',
+  whatsappNumber: '573219879552',
   heroTitle: 'La magia de la Navidad se comparte con Bromia 🎄',
-  heroSubtitle: 'Edición especial navideña: Brookies festivos con Nutella y canela, chocobombas de chocolate caliente y cajitas de regalo ideales para tus novenas.',
-  promoBannerText: '🎄 Especial Navideño: Reserva tus antojitos y regalos de Novenas con anticipación • Envíos en Bogotá ✨',
+  heroSubtitle: 'Hecho con amor by Cata Puentes • Brookies melcochudos, chocobombas, corazones de mousse y mini donas gourmet.',
+  promoBannerText: '✨ Pedidos con mínimo 1 día de anticipación • Envíos en Bogotá ($10.000) • WhatsApp 321 987 9552 ✨',
   instagramHandle: '@bromiaoficial',
   city: 'Bogotá, Colombia'
 }

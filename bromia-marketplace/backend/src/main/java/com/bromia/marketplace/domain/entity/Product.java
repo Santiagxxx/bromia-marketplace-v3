@@ -37,7 +37,7 @@ public class Product {
     @Column(precision = 12, scale = 2)
     private BigDecimal compareAtPrice;
 
-    @Column(nullable = false, length = 600)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)

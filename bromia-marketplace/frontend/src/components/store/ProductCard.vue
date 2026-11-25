@@ -4,12 +4,13 @@
   >
     <div
       @click="$emit('select', product)"
-      class="relative aspect-square bg-bromia-lavender/40 overflow-hidden cursor-pointer"
+      class="relative aspect-square bg-gradient-to-b from-[#FFFDF9] to-[#FFF5F2] overflow-hidden cursor-pointer flex items-center justify-center p-3"
     >
       <img
         :src="product.imageUrl"
         :alt="product.name"
-        class="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110"
+        class="w-full h-full object-contain filter drop-shadow-[0_6px_10px_rgba(66,32,18,0.16)] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110 group-hover:rotate-1"
+        loading="lazy"
       />
 
       <div

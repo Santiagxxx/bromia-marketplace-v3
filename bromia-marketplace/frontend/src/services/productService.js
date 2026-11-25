@@ -24,5 +24,14 @@ export const productApi = {
   },
   getStats() {
     return apiClient.get('/admin/stats')
+  },
+  uploadImage(file) {
+    const formData = new FormData()
+    formData.append('file', file)
+    return apiClient.post('/products/upload-image', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
   }
 }

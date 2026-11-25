@@ -20,7 +20,7 @@
         <input
           v-model="form.whatsappNumber"
           type="text"
-          placeholder="573001234567"
+          placeholder="573219879552"
           required
           class="w-full px-4 py-2.5 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-sm font-semibold focus:outline-none focus:border-bromia-cocoa"
         />

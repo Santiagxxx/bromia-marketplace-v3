@@ -26,12 +26,13 @@
                     256-bit SSL
                   </span>
                 </div>
-                <p class="text-xs text-bromia-lavender/80">Procesado con tecnología Wompi • Colombia</p>
+                <p class="text-xs text-bromia-lavender/80">Pago único con Wompi • Colombia</p>
               </div>
             </div>
 
             <button
               v-if="!isProcessing && !isSuccess"
+              type="button"
               @click="$emit('close')"
               class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
             >
@@ -59,9 +60,9 @@
           <!-- PANTALLA: PROCESANDO PAGO -->
           <div v-if="isProcessing" class="p-8 text-center space-y-4">
             <div class="w-16 h-16 border-4 border-bromia-lavender border-t-bromia-berry rounded-full animate-spin mx-auto"></div>
-            <h3 class="font-display font-bold text-xl text-bromia-cocoa">Conectando con tu entidad financiera...</h3>
+            <h3 class="font-display font-bold text-xl text-bromia-cocoa">Conectando con Wompi...</h3>
             <p class="text-xs text-bromia-cocoa-light max-w-xs mx-auto">
-              Por favor no cierres esta ventana. Estamos verificando los fondos y autorizando la orden.
+              Por favor no cierres esta ventana. Estamos verificando los detalles de tu compra y autorizando la orden.
             </p>
           </div>
 
@@ -82,12 +83,16 @@
             <!-- Recibo de la transacción -->
             <div class="bg-bromia-lavender-soft/60 rounded-2xl p-4 border border-bromia-lavender text-xs text-left space-y-2">
               <div class="flex justify-between">
-                <span class="text-bromia-cocoa-light">Referencia CUS:</span>
+                <span class="text-bromia-cocoa-light">Referencia Wompi:</span>
                 <span class="font-mono font-bold text-bromia-cocoa">{{ approvalCode }}</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-bromia-cocoa-light">Método utilizado:</span>
-                <span class="font-semibold text-bromia-cocoa">{{ activeTabName }}</span>
+                <span class="text-bromia-cocoa-light">Pasarela de pago:</span>
+                <span class="font-semibold text-bromia-cocoa">Wompi</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-bromia-cocoa-light">Comprador:</span>
+                <span class="font-semibold text-bromia-cocoa">{{ wompiData.fullName }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-bromia-cocoa-light">Monto debitado:</span>
@@ -101,6 +106,7 @@
 
             <div class="space-y-2.5 pt-2">
               <button
+                type="button"
                 @click="completeAndNotifyWhatsApp"
                 class="w-full py-3.5 px-6 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95"
               >
@@ -109,6 +115,7 @@
               </button>
 
               <button
+                type="button"
                 @click="$emit('finished')"
                 class="w-full py-2.5 text-xs font-bold text-bromia-cocoa-light hover:text-bromia-cocoa transition-colors"
               >
@@ -117,220 +124,118 @@
             </div>
           </div>
 
-          <!-- PANTALLA: FORMULARIO DE MÉTODOS DE PAGO -->
-          <div v-else class="p-6 space-y-5">
-            <!-- Tabs de métodos de pago colombianos -->
-            <div class="grid grid-cols-4 gap-1.5 p-1 bg-bromia-lavender-soft rounded-2xl border border-bromia-lavender">
-              <button
-                type="button"
-                @click="activeTab = 'pse'"
-                class="py-2 px-1 text-center rounded-xl text-xs font-bold transition-all flex flex-col items-center gap-1"
-                :class="activeTab === 'pse'
-                  ? 'bg-white text-bromia-berry shadow-sm'
-                  : 'text-bromia-cocoa hover:text-bromia-cocoa-dark'"
-              >
-                <Building class="w-4 h-4" />
-                <span>PSE</span>
-              </button>
-
-              <button
-                type="button"
-                @click="activeTab = 'bancolombia'"
-                class="py-2 px-1 text-center rounded-xl text-xs font-bold transition-all flex flex-col items-center gap-1"
-                :class="activeTab === 'bancolombia'
-                  ? 'bg-white text-bromia-berry shadow-sm'
-                  : 'text-bromia-cocoa hover:text-bromia-cocoa-dark'"
-              >
-                <Sparkles class="w-4 h-4" />
-                <span>Bancolombia</span>
-              </button>
-
-              <button
-                type="button"
-                @click="activeTab = 'nequi'"
-                class="py-2 px-1 text-center rounded-xl text-xs font-bold transition-all flex flex-col items-center gap-1"
-                :class="activeTab === 'nequi'
-                  ? 'bg-white text-bromia-berry shadow-sm'
-                  : 'text-bromia-cocoa hover:text-bromia-cocoa-dark'"
-              >
-                <Phone class="w-4 h-4" />
-                <span>Nequi</span>
-              </button>
-
-              <button
-                type="button"
-                @click="activeTab = 'card'"
-                class="py-2 px-1 text-center rounded-xl text-xs font-bold transition-all flex flex-col items-center gap-1"
-                :class="activeTab === 'card'
-                  ? 'bg-white text-bromia-berry shadow-sm'
-                  : 'text-bromia-cocoa hover:text-bromia-cocoa-dark'"
-              >
-                <CreditCard class="w-4 h-4" />
-                <span>Tarjeta</span>
-              </button>
-            </div>
-
-            <!-- TAB 1: PSE -->
-            <div v-if="activeTab === 'pse'" class="space-y-3">
-              <div>
-                <label class="block text-xs font-bold text-bromia-cocoa mb-1">Selecciona tu Banco:</label>
-                <select
-                  v-model="pseData.bank"
-                  class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm font-semibold focus:outline-none focus:border-bromia-cocoa"
-                >
-                  <option value="Bancolombia">Bancolombia (Personas / Empresas)</option>
-                  <option value="Nequi">Nequi</option>
-                  <option value="Davivienda">Davivienda / Daviplata</option>
-                  <option value="Nu Colombia">Nu Colombia (Cuenta de Ahorros Nu)</option>
-                  <option value="Banco de Bogota">Banco de Bogotá</option>
-                  <option value="BBVA">BBVA Colombia</option>
-                  <option value="Scotiabank">Scotiabank Colpatria</option>
-                  <option value="Lulo Bank">Lulo Bank</option>
-                  <option value="Falabella">Banco Falabella</option>
-                </select>
-              </div>
-
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="block text-xs font-bold text-bromia-cocoa mb-1">Tipo de Persona:</label>
-                  <select
-                    v-model="pseData.personType"
-                    class="w-full px-3 py-2 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs focus:outline-none focus:border-bromia-cocoa"
-                  >
-                    <option value="natural">Natural</option>
-                    <option value="juridica">Jurídica</option>
-                  </select>
+          <!-- PANTALLA: DETALLES DE COMPRA Y PAGO ÚNICO CON WOMPI -->
+          <form v-else @submit.prevent="processPayment" class="p-6 space-y-4">
+            <!-- Badge / Banner único de Wompi -->
+            <div class="p-3.5 rounded-2xl bg-bromia-lavender-soft border border-bromia-lavender flex items-center justify-between gap-3">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-bromia-cocoa text-white flex items-center justify-center shrink-0">
+                  <Sparkles class="w-4 h-4 text-bromia-lavender" />
                 </div>
                 <div>
-                  <label class="block text-xs font-bold text-bromia-cocoa mb-1">N° de Documento:</label>
+                  <p class="text-xs font-extrabold text-bromia-cocoa">Pago seguro con Wompi</p>
+                  <p class="text-[11px] text-bromia-cocoa-light">
+                    Completa tus datos obligatorios para continuar con Wompi.
+                  </p>
+                </div>
+              </div>
+              <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-white text-bromia-berry border border-bromia-lavender shrink-0">
+                Único medio
+              </span>
+            </div>
+
+            <!-- Campos obligatorios de detalles de compra -->
+            <div class="space-y-3">
+              <div>
+                <label class="block text-xs font-bold text-bromia-cocoa mb-1">
+                  Nombre completo del comprador <span class="text-bromia-berry">*</span>
+                </label>
+                <input
+                  v-model.trim="wompiData.fullName"
+                  type="text"
+                  required
+                  minlength="3"
+                  placeholder="Ej. María Camila Gómez"
+                  class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
+                />
+              </div>
+
+              <div class="grid grid-cols-3 gap-2">
+                <div>
+                  <label class="block text-xs font-bold text-bromia-cocoa mb-1">
+                    Tipo Doc. <span class="text-bromia-berry">*</span>
+                  </label>
+                  <select
+                    v-model="wompiData.docType"
+                    required
+                    class="w-full px-3 py-2.5 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
+                  >
+                    <option value="CC">CC</option>
+                    <option value="CE">CE</option>
+                    <option value="NIT">NIT</option>
+                    <option value="PP">Pasaporte</option>
+                  </select>
+                </div>
+                <div class="col-span-2">
+                  <label class="block text-xs font-bold text-bromia-cocoa mb-1">
+                    Número de documento <span class="text-bromia-berry">*</span>
+                  </label>
                   <input
-                    v-model="pseData.idNumber"
+                    v-model.trim="wompiData.idNumber"
                     type="text"
+                    inputmode="numeric"
+                    required
+                    minlength="5"
                     placeholder="1020304050"
-                    class="w-full px-3 py-2 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs focus:outline-none focus:border-bromia-cocoa"
+                    class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
                   />
                 </div>
               </div>
 
               <div>
-                <label class="block text-xs font-bold text-bromia-cocoa mb-1">Correo registrado en PSE:</label>
+                <label class="block text-xs font-bold text-bromia-cocoa mb-1">
+                  Correo electrónico (para comprobante) <span class="text-bromia-berry">*</span>
+                </label>
                 <input
-                  v-model="pseData.email"
+                  v-model.trim="wompiData.email"
                   type="email"
+                  required
                   placeholder="ejemplo@correo.com"
                   class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
                 />
               </div>
-            </div>
-
-            <!-- TAB 2: BOTÓN BANCOLOMBIA -->
-            <div v-if="activeTab === 'bancolombia'" class="space-y-3">
-              <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-start gap-2.5">
-                <Sparkles class="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-                <p>Paga al instante directamente desde tu App Bancolombia sin necesidad de ingresar contraseñas aquí.</p>
-              </div>
 
               <div>
-                <label class="block text-xs font-bold text-bromia-cocoa mb-1">Número de celular o usuario Bancolombia:</label>
+                <label class="block text-xs font-bold text-bromia-cocoa mb-1">
+                  Celular / WhatsApp de contacto <span class="text-bromia-berry">*</span>
+                </label>
                 <input
-                  v-model="bancolombiaData.phone"
+                  v-model.trim="wompiData.phone"
                   type="tel"
+                  required
+                  minlength="7"
                   placeholder="300 123 4567"
                   class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
                 />
               </div>
             </div>
 
-            <!-- TAB 3: NEQUI -->
-            <div v-if="activeTab === 'nequi'" class="space-y-3">
-              <div class="p-3.5 rounded-2xl bg-purple-50 border border-purple-200 text-xs text-purple-950 flex items-start gap-2.5">
-                <Phone class="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
-                <p>Te llegará una notificación a tu App Nequi para aprobar el pago por <strong>{{ formatCOP(total) }}</strong>.</p>
-              </div>
+            <!-- Mensaje de error si falta algún detalle obligatorio -->
+            <p
+              v-if="validationError"
+              class="text-xs font-semibold text-red-600 bg-red-50 border border-red-200 rounded-xl px-3.5 py-2 flex items-center gap-2"
+            >
+              <AlertCircle class="w-4 h-4 shrink-0" />
+              <span>{{ validationError }}</span>
+            </p>
 
-              <div>
-                <label class="block text-xs font-bold text-bromia-cocoa mb-1">Número de celular Nequi:</label>
-                <input
-                  v-model="nequiData.phone"
-                  type="tel"
-                  placeholder="300 123 4567"
-                  class="w-full px-3.5 py-2.5 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
-                />
-              </div>
-            </div>
-
-            <!-- TAB 4: TARJETA DE CRÉDITO / DÉBITO -->
-            <div v-if="activeTab === 'card'" class="space-y-3">
-              <div>
-                <label class="block text-xs font-bold text-bromia-cocoa mb-1">Número de Tarjeta:</label>
-                <div class="relative">
-                  <CreditCard class="w-4 h-4 text-bromia-cocoa-light absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    v-model="cardData.number"
-                    type="text"
-                    placeholder="4500 •••• •••• 1234"
-                    maxlength="19"
-                    class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs sm:text-sm focus:outline-none focus:border-bromia-cocoa"
-                  />
-                </div>
-              </div>
-
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="block text-xs font-bold text-bromia-cocoa mb-1">Vence (MM/AA):</label>
-                  <input
-                    v-model="cardData.expiry"
-                    type="text"
-                    placeholder="12/28"
-                    maxlength="5"
-                    class="w-full px-3 py-2 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs focus:outline-none focus:border-bromia-cocoa"
-                  />
-                </div>
-                <div>
-                  <label class="block text-xs font-bold text-bromia-cocoa mb-1">CVV:</label>
-                  <input
-                    v-model="cardData.cvv"
-                    type="password"
-                    placeholder="123"
-                    maxlength="4"
-                    class="w-full px-3 py-2 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs focus:outline-none focus:border-bromia-cocoa"
-                  />
-                </div>
-              </div>
-
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="block text-xs font-bold text-bromia-cocoa mb-1">Titular:</label>
-                  <input
-                    v-model="cardData.holder"
-                    type="text"
-                    placeholder="Como figura en la tarjeta"
-                    class="w-full px-3 py-2 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs focus:outline-none focus:border-bromia-cocoa"
-                  />
-                </div>
-                <div>
-                  <label class="block text-xs font-bold text-bromia-cocoa mb-1">Cuotas:</label>
-                  <select
-                    v-model="cardData.installments"
-                    class="w-full px-3 py-2 rounded-xl bg-bromia-lavender-soft border border-bromia-lavender text-xs focus:outline-none focus:border-bromia-cocoa"
-                  >
-                    <option value="1">1 cuota (Sin intereses)</option>
-                    <option value="2">2 cuotas</option>
-                    <option value="3">3 cuotas</option>
-                    <option value="6">6 cuotas</option>
-                    <option value="12">12 cuotas</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <!-- Botón de acción final para procesar pago -->
+            <!-- Botón de acción final para procesar pago con Wompi -->
             <button
-              @click="processPayment"
+              type="submit"
               class="w-full py-4 px-6 rounded-full bg-bromia-cocoa hover:bg-bromia-cocoa-dark text-white font-bold text-sm shadow-bromia flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.01] active:scale-95"
             >
               <Lock class="w-4 h-4 text-bromia-lavender" />
-              <span>Pagar {{ formatCOP(total) }} con {{ activeTabName }}</span>
+              <span>Pagar {{ formatCOP(total) }} con Wompi</span>
             </button>
 
             <div class="flex items-center justify-center gap-4 pt-1 text-[11px] text-bromia-cocoa-light/80">
@@ -341,7 +246,7 @@
               <span>•</span>
               <span>Protección al Comprador</span>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </Transition>
@@ -349,18 +254,16 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import {
   X,
   Lock,
-  Building,
-  CreditCard,
   Sparkles,
-  Phone,
   Calendar,
   CheckCircle2,
   MessageCircle,
-  ShieldCheck
+  ShieldCheck,
+  AlertCircle
 } from 'lucide-vue-next'
 import { formatCOP } from '@/utils/formatters'
 
@@ -389,62 +292,64 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'payment-success', 'finished', 'notify-whatsapp'])
 
-const activeTab = ref('pse')
 const isProcessing = ref(false)
 const isSuccess = ref(false)
 const approvalCode = ref('')
+const validationError = ref('')
 
-const pseData = ref({
-  bank: 'Bancolombia',
-  personType: 'natural',
+const wompiData = ref({
+  fullName: '',
+  docType: 'CC',
   idNumber: '',
-  email: ''
-})
-
-const bancolombiaData = ref({
+  email: '',
   phone: ''
 })
 
-const nequiData = ref({
-  phone: ''
-})
-
-const cardData = ref({
-  number: '',
-  expiry: '',
-  cvv: '',
-  holder: '',
-  installments: '1'
-})
-
-const activeTabName = computed(() => {
-  const map = {
-    pse: `PSE (${pseData.value.bank})`,
-    bancolombia: 'Botón Bancolombia',
-    nequi: 'Nequi',
-    card: 'Tarjeta de Crédito'
+function validatePurchaseDetails() {
+  if (!wompiData.value.fullName || wompiData.value.fullName.length < 3) {
+    validationError.value = 'Por favor ingresa tu nombre completo.'
+    return false
   }
-  return map[activeTab.value] || 'Pasarela'
-})
+  if (!wompiData.value.docType || !wompiData.value.idNumber || wompiData.value.idNumber.length < 5) {
+    validationError.value = 'Por favor ingresa un tipo y número de documento válido.'
+    return false
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!wompiData.value.email || !emailRegex.test(wompiData.value.email)) {
+    validationError.value = 'Por favor ingresa un correo electrónico válido.'
+    return false
+  }
+  if (!wompiData.value.phone || wompiData.value.phone.replace(/\D/g, '').length < 7) {
+    validationError.value = 'Por favor ingresa un número de celular válido.'
+    return false
+  }
+
+  validationError.value = ''
+  return true
+}
 
 function processPayment() {
+  if (!validatePurchaseDetails()) return
+
   isProcessing.value = true
   setTimeout(() => {
     isProcessing.value = false
     isSuccess.value = true
     approvalCode.value = 'WMP-' + Math.floor(100000 + Math.random() * 900000)
     emit('payment-success', {
-      method: activeTabName.value,
+      method: 'Wompi',
       approvalCode: approvalCode.value,
-      total: props.total
+      total: props.total,
+      customer: { ...wompiData.value }
     })
   }, 1600)
 }
 
 function completeAndNotifyWhatsApp() {
   emit('notify-whatsapp', {
-    method: activeTabName.value,
-    approvalCode: approvalCode.value
+    method: 'Wompi',
+    approvalCode: approvalCode.value,
+    customer: { ...wompiData.value }
   })
 }
 </script>
